@@ -1,19 +1,34 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {List} from 'react-virtualized'
 
 require('./index.css')
 
 
 export function App({alarms}) {
-  const items = alarms.map(
-    x => (
-      <li key={x.event_id} className='fade'>
-        {x.camera_id}, {x.prediction}, {new Date(x.starting_timestamp).toUTCString()}, {x.priority}
-      </li>
+  function row_renderer({key, index, style}) {
+    const {
+      camera_id,
+      prediction,
+      starting_timestamp,
+      priority
+    } = alarms[index]
+
+    return (
+      <div key={key} style={style}>
+        {camera_id}, {prediction}, {new Date(starting_timestamp).toUTCString()}, {priority}
+      </div>
     )
-  )
+  }
+
   return (
-    <ul>{items}</ul>
+    <List
+      width={400}
+      height={600}
+      rowCount={alarms.length}
+      rowHeight={20}
+      rowRenderer={row_renderer}
+    />
   )
 }
 
