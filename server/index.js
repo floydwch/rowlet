@@ -58,21 +58,7 @@ class EventScheduler {
     setInterval(() => {
       if (this.event_queue.size) {
         const event = this.event_queue.pop()
-        const {
-          event_id,
-          starting_timestamp,
-          priority,
-          camera_id,
-          prediction
-        } = event
-
-        this.sink.publish('new-alarm-events', 'alarm', {
-          event_id,
-          starting_timestamp,
-          priority,
-          camera_id,
-          prediction
-        })
+        this.sink.publish('new-alarm-events', 'alarm', event)
         this.sending_events.set(event.event_id, event)
       }
     }, 0)
