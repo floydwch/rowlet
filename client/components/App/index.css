@@ -1,9 +1,0 @@
-.fade {
-  animation: fade 3s;
-  opacity: 1;
-}
-
-@keyframes fade {
-  from {opacity: 0}
-  to {opacity: 1}
-}

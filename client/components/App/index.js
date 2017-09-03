@@ -2,8 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {List} from 'react-virtualized'
 
-require('./index.css')
-
 
 export function App({alarms}) {
   function row_renderer({key, index, style}) {
