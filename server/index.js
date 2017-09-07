@@ -9,12 +9,13 @@ const uuid = require('uuid/v4')
 
 
 class Event {
-  constructor(camera_id, prediction, priority) {
+  constructor(camera_id, prediction, priority, image_url) {
     this.camera_id = camera_id
     this.prediction = prediction
     this.priority = priority
     this.event_id = uuid()
     this.starting_timestamp = Date.now()
+    this.image_url = image_url
   }
 
   compare(other_item) {
@@ -84,10 +85,19 @@ const queue = new PriorityQueue
 const scheduler = new EventScheduler(queue, sse)
 
 const event_generators = cartesianProduct(
-  [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], ['people', 'car', 'UFO'], [0, 1, 2]]
-).map(({0: camera_id, 1: prediction, 2: priority}) =>
+  [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ['people', 'car', 'UFO'],
+    [0, 1, 2],
+    [
+      'https://i.imgur.com/X5RHI2e.jpg',
+      'https://i.imgur.com/GSAzzuK.png',
+      'https://i.imgur.com/GtjEpwB.jpg'
+    ]
+  ]
+).map(({0: camera_id, 1: prediction, 2: priority, 3: image_url}) =>
   poissonProcess.create(60000, () => {
-    const event = new Event(camera_id, prediction, priority)
+    const event = new Event(camera_id, prediction, priority, image_url)
     console.log(event)
     queue.push(event)
   })

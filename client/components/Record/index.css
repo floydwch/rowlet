@@ -1,0 +1,64 @@
+.record {
+  display: flex;
+  align-items: center;
+}
+
+.record-read {
+  margin: 0 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: black;
+}
+
+.record-box {
+  display: flex;
+  width: 90%;
+  height: 50px;
+  padding: 20px;
+  border: 1px solid black;
+  justify-content: center;
+  align-items: center;
+}
+
+.record-img {
+  width: 50px;
+  height: 50px;
+}
+
+.record-detail {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.record-detail-prediction {
+  width: 80px;
+  height: 30px;
+  border: 1px solid gray;
+  line-height: 30px;
+  text-align: center;
+}
+
+.record-detail ul {
+  width: 300px;
+  margin: 0;
+  padding: 0;
+}
+
+.record-detail li {
+  list-style-type: none;
+}
+
+.event-btn {
+  height: 30px;
+}
+
+.record-btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  flex: 1;
+}

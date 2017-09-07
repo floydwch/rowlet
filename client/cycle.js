@@ -5,12 +5,12 @@ import * as actions from './actions.js'
 
 
 export default function sync_with_server(source) {
-  const sse$ = source.SSE
-  const request$ = sse$
-    .map(data => ({
-      url: `http://localhost:3000/event-viewed/${data.event_id}`
+  const request$ = source.ACTION
+    .filter(action => action.type === 'READ_ALARM')
+    .map(({payload}) => ({
+      url: `http://localhost:3000/event-viewed/${payload.event_id}`
     }))
-  const action$ = sse$
+  const action$ = source.SSE
     .map(actions.receive_alarm)
 
   return {
