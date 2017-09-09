@@ -1,14 +1,15 @@
 import {adapt} from '@cycle/run/lib/adapt'
 import xs from 'xstream'
+import {combineCycles} from 'redux-cycles'
 
 import * as actions from './actions.js'
 
 
-export default function sync_with_server(source) {
+export function sync_with_server(source) {
   const request$ = source.ACTION
     .filter(action => action.type === 'READ_ALARM')
-    .map(({payload}) => ({
-      url: `http://localhost:3000/event-viewed/${payload.event_id}`
+    .map(({payload: {event_id}}) => ({
+      url: `http://localhost:3000/event-viewed/${event_id}`
     }))
   const action$ = source.SSE
     .map(actions.receive_alarm)
@@ -18,6 +19,21 @@ export default function sync_with_server(source) {
     ACTION: action$
   }
 }
+
+
+export function correct_prediction(source) {
+  const request$ = source.ACTION
+    .filter(action => action.type === 'CORRECT_PREDICTION')
+    .map(({payload: {event_id}}) => ({
+      url: `http://localhost:3000/events/${event_id}`,
+      method: 'patch'
+    }))
+
+  return {
+    HTTP: request$
+  }
+}
+
 
 export function sse_driver() {
   const event_ids = {}
@@ -38,3 +54,6 @@ export function sse_driver() {
   })
   return adapt(source)
 }
+
+
+export default combineCycles(sync_with_server, correct_prediction)

@@ -114,6 +114,10 @@ router.get('/event-viewed/:event_id/', ctx => {
   ctx.body = 'done'
 })
 
+router.patch('/events/:event_id', ctx => {
+  ctx.body = 'done'
+})
+
 app.use(router.routes())
   .use(router.allowedMethods())
   .use(koaStaticServer({rootDir: 'client/dist', rootPath: '/'}))
