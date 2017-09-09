@@ -8,14 +8,14 @@ import * as actions from '../../actions'
 import './index.css'
 
 
-export function App({alarms, actions}) {
+export function App({alarms, records, actions}) {
   function row_renderer({key, index, style}) {
     const {
       event_id,
       camera_id,
       prediction,
       starting_timestamp,
-      image_url
+      image_url,
     } = alarms[index]
 
     return (
@@ -27,7 +27,11 @@ export function App({alarms, actions}) {
         prediction={prediction}
         starting_timestamp={starting_timestamp}
         image_url={image_url}
+        read={records[event_id] && records[event_id].read}
+        expanded={records[event_id] && records[event_id].expanded}
+        expand_record={actions.expand_record}
         read_alarm={actions.read_alarm}
+        correct_prediction={actions.correct_prediction}
       >
       </Record>
     )
@@ -46,6 +50,6 @@ export function App({alarms, actions}) {
 }
 
 export default connect(
-  state => ({alarms: state.alarms}),
+  state => ({alarms: state.alarms, records: state.records}),
   dispatch => ({actions: bindActionCreators(actions, dispatch)})
 )(App)

@@ -23,9 +23,47 @@ export function alarms(state=[], action) {
       )
       return [
         ...state.slice(0, insert_index),
-        action.payload,
+        {
+          event_id: action.payload.event_id,
+          camera_id: action.payload.camera_id,
+          prediction: action.payload.prediction,
+          starting_timestamp: action.payload.starting_timestamp,
+          image_url: action.payload.image_url
+        },
         ...state.slice(insert_index)
       ]
+    case 'CORRECT_PREDICTION':
+      const index = state.findIndex(e => e.event_id === action.payload.event_id)
+      const corrected_prediction_state = [...state]
+      corrected_prediction_state[index] = {
+        ...state[index],
+        prediction: action.payload.prediction
+      }
+      return corrected_prediction_state
+    default:
+      return state
+  }
+}
+
+
+export function records(state={}, action) {
+  switch (action.type) {
+    case 'READ_ALARM':
+      return {
+        ...state,
+        [action.payload.event_id]: {
+          ...state[action.payload.event_id],
+          read: true
+        }
+      }
+    case 'EXPAND_RECORD':
+      return {
+        ...state,
+        [action.payload.event_id]: {
+          ...state[action.payload.event_id],
+          expanded: action.payload.expanded
+        }
+      }
     default:
       return state
   }
@@ -33,5 +71,6 @@ export function alarms(state=[], action) {
 
 
 export default combineReducers({
-  alarms
+  alarms,
+  records
 })

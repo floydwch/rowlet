@@ -96,7 +96,7 @@ const event_generators = cartesianProduct(
     ]
   ]
 ).map(({0: camera_id, 1: prediction, 2: priority, 3: image_url}) =>
-  poissonProcess.create(60000, () => {
+  poissonProcess.create(600000, () => {
     const event = new Event(camera_id, prediction, priority, image_url)
     console.log(event)
     queue.push(event)

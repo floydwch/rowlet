@@ -5,15 +5,6 @@ import './index.css'
 
 
 export default class Record extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      chosen_event: props.prediction,
-      read: false,
-      expanded: false
-    }
-  }
-
   render() {
     const {
       style,
@@ -23,37 +14,38 @@ export default class Record extends Component {
       prediction,
       starting_timestamp,
       image_url,
-      read_alarm
-    } = this.props
-
-    const {
-      chosen_event,
       read,
-      expanded
-    } = this.state
+      expanded,
+      expand_record,
+      read_alarm,
+      correct_prediction
+    } = this.props
 
     const detail_component = (
       <div className='record-detail'>
         <ul>
           <li>Camera ID: {camera_id}</li>
           <li>Time: {
-            new Date(starting_timestamp).toUTCString()
+            new Date(starting_timestamp).toLocaleString()
           }</li>
         </ul>
         <div className='record-detail-prediction'>
-          {chosen_event}
+          {prediction}
         </div>
       </div>
     )
 
-    const btns = ['People', 'Car', 'UFO'].map(type => (
+    const btns = ['people', 'car', 'UFO'].map(type => (
       <button
         key={`${type}-btn`}
-        className={classNames('event-btn', {activated: chosen_event})}
+        className={
+          classNames(
+            'event-btn',
+            {'event-btn--activated': type === prediction}
+          )
+        }
         onClick={() => {
-          this.setState(prev_state => {
-            return {...prev_state, chosen_event: type}
-          })
+          correct_prediction({event_id, prediction: type})
         }}
       >
         {type}
@@ -75,10 +67,10 @@ export default class Record extends Component {
         className={classNames('record', className)}
         style={style}
         onClick={() => {
-          this.setState(prev_state => {
-            return {...prev_state, expanded: !prev_state.expanded, read: true}
-          })
-          read_alarm({event_id})
+          expand_record({event_id, expanded: !expanded})
+          if (!read) {
+            read_alarm({event_id})
+          }
         }}
       >
         <div className='record-read' style={{visibility: read ? 'hidden': 'visible'}}/>

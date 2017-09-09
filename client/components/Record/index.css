@@ -1,6 +1,7 @@
 .record {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .record-read {
@@ -53,6 +54,11 @@
 
 .event-btn {
   height: 30px;
+  cursor: pointer;
+}
+
+.event-btn--activated {
+  background-color: blue;
 }
 
 .record-btn-group {
